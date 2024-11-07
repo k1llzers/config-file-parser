@@ -1,0 +1,11 @@
+WHITESPACE = _{ " " | "\t" }
+
+file = { SOI ~ (NEWLINE* ~ (comment | section) ~ NEWLINE*)* ~ EOI }
+
+section = {"[" ~ name ~ "]" ~ NEWLINE+ ~ (NEWLINE* ~ (comment | pair))* ~ NEWLINE+}
+name = @{ UPPERCASE_LETTER+ }
+
+pair = { key ~ "=" ~ value }
+key = @{ (ALPHABETIC)+ }
+value = @{ (!NEWLINE ~ !WHITESPACE ~ ANY)+ }
+comment = { ";" ~ (!NEWLINE ~ ANY)* }

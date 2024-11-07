@@ -1,0 +1,10 @@
+[package]
+name = "config-file-parser"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.93"
+pest = "2.7.14"
+pest_derive = "2.7.14"
+thiserror = "2.0.0"
