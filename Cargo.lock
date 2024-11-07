@@ -24,16 +24,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "config-file-parser"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "pest",
- "pest_derive",
- "thiserror 2.0.0",
-]
-
-[[package]]
 name = "cpufeatures"
 version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -70,6 +60,16 @@ checksum = "85649ca51fd72272d7821adaf274ad91c288277713d9c18820d8499a7ff69e9a"
 dependencies = [
  "typenum",
  "version_check",
+]
+
+[[package]]
+name = "ini-file-parser"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "pest",
+ "pest_derive",
+ "thiserror 2.0.0",
 ]
 
 [[package]]
