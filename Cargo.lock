@@ -63,7 +63,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "ini-file-parser"
+name = "ini_file_parser"
 version = "0.1.0"
 dependencies = [
  "anyhow",

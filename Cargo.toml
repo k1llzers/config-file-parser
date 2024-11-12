@@ -1,5 +1,5 @@
 [package]
-name = "ini-file-parser"
+name = "ini_file_parser"
 authors = ["Semytskyi Oleksandr o.semytskyi@ukma.edu.ua"]
 version = "0.1.0"
 edition = "2021"
