@@ -5,6 +5,7 @@ version = "0.1.0"
 edition = "2021"
 description = "A Rust-based parser for INI configuration files, providing structured access to sections and key-value pairs. This parser helps read and manipulate configuration data commonly used in various applications."
 license = "MIT"
+readme = "README.md"
 
 [dependencies]
 anyhow = "1.0.93"
