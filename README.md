@@ -59,4 +59,5 @@ let third = config.get_value_in_section("section1", "key2") // result is Some("v
 ### Documentation and crate:
 
 Documentation: https://docs.rs/ini_file_parser/latest/ini_file_parser/index.html
+
 Crate: https://crates.io/crates/ini_file_parser
