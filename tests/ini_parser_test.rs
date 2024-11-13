@@ -3,6 +3,20 @@ use ini_file_parser::*;
 use pest::Parser;
 
 #[test]
+fn whitespace_test() -> anyhow::Result<()> {
+    let pair = INIGrammar::parse(Rule::WHITESPACE, " ");
+    assert!(pair.is_ok());
+
+    let pair = INIGrammar::parse(Rule::WHITESPACE, "\t");
+    assert!(pair.is_ok());
+
+    let pair = INIGrammar::parse(Rule::WHITESPACE, "k");
+    assert!(pair.is_err());
+
+    Ok(())
+}
+
+#[test]
 fn comment_test() -> anyhow::Result<()> {
     let pair = INIGrammar::parse(Rule::comment, ";comment")?
         .next()
