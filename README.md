@@ -54,3 +54,9 @@ let config = parse_ini(ini_content)?;
 let first = config.get_value("key1") // result is Some("value1")
 let second = config.get_value("aaaaaa") // result is None
 let third = config.get_value_in_section("section1", "key2") // result is Some("value2")
+```
+
+### Documentation and crate:
+
+Documentation: https://docs.rs/ini_file_parser/latest/ini_file_parser/index.html
+Crate: https://crates.io/crates/ini_file_parser
