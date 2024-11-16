@@ -1,7 +1,7 @@
 [package]
 name = "ini_file_parser"
 authors = ["Semytskyi Oleksandr o.semytskyi@ukma.edu.ua"]
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 description = "A Rust-based parser for INI configuration files, providing structured access to sections and key-value pairs. This parser helps read and manipulate configuration data commonly used in various applications."
 license = "MIT"
