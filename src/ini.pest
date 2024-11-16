@@ -1,11 +1,21 @@
+/// This rule matches whitespace characters (space, tab).
 WHITESPACE = _{ " " | "\t" }
 
+/// Rule that represent ini file, and match any count of sections and comments in any order with any count of newline between them.
 file = { SOI ~ (NEWLINE* ~ (comment | section) ~ NEWLINE*)* ~ EOI }
 
+/// Rule that represent one section. It should match name in square brackets, new line after it, and any count of comments and keyvalue pairs in any order with any count of whitespace between them.
 section = {"[" ~ name ~ "]" ~ NEWLINE+ ~ (NEWLINE* ~ (comment | pair))* ~ NEWLINE+}
+/// Rule that match section name, section name contain only uppercase symbols
 name = @{ UPPERCASE_LETTER+ }
 
-pair = { key ~ "=" ~ value }
+/// Rule that match key value pair separated by '='.
+pair = { key ~ "=" ~ (array_value | value) }
+/// Rule that match key of keyvalue pair, it should contain only alphabetic char.
 key = @{ (ALPHABETIC)+ }
-value = @{ (!NEWLINE ~ !WHITESPACE ~ ANY)+ }
+/// Rule that match simple value, it should contain any character exclusive comma, whitespace, newline, and square brackets.
+value = @{ (!("," | WHITESPACE | NEWLINE | "[" | "]") ~ ANY)+ }
+/// Rule that match array value, it should contain comma separated values in square brackets.
+array_value = { "[" ~ WHITESPACE* ~ value ~ (WHITESPACE* ~ "," ~ WHITESPACE* ~ value)* ~ WHITESPACE* ~ "]" }
+/// Rule that match comment, it should contain ; at start and any character exclusive newline.
 comment = { ";" ~ (!NEWLINE ~ ANY)* }

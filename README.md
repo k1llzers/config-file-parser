@@ -31,9 +31,10 @@ file = { SOI ~ (NEWLINE* ~ (comment | section) ~ NEWLINE*)* ~ EOI }
 section = {"[" ~ name ~ "]" ~ NEWLINE+ ~ (NEWLINE* ~ (comment | pair))* ~ NEWLINE+}
 name = @{ UPPERCASE_LETTER+ }
 
-pair = { key ~ "=" ~ value }
+pair = { key ~ "=" ~ (array_value | value) }
 key = @{ (ALPHABETIC)+ }
-value = @{ (!NEWLINE ~ !WHITESPACE ~ ANY)+ }
+value = @{ (!("," | WHITESPACE | NEWLINE | "[" | "]") ~ ANY)+ }
+array_value = { "[" ~ WHITESPACE* ~ value ~ (WHITESPACE* ~ "," ~ WHITESPACE* ~ value)* ~ WHITESPACE* ~ "]" }
 comment = { ";" ~ (!NEWLINE ~ ANY)* }
 ```
 

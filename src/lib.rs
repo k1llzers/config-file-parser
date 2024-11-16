@@ -34,8 +34,8 @@ impl Config {
     ///
     /// # Returns
     ///
-    /// * `Option<&String>` - Returns the value if found, or `None` if the key does not exist.
-    pub fn get_value(&self, key: &str) -> Option<&String> {
+    /// * `Option<&Value>` - Returns the value if found, or `None` if the key does not exist.
+    pub fn get_value(&self, key: &str) -> Option<&Value> {
         for section in self.sections.values() {
             if let Some(value) = section.pairs.get(key) {
                 return Some(value);
@@ -53,8 +53,8 @@ impl Config {
     ///
     /// # Returns
     ///
-    /// * `Result<&String, ParseError>` - Returns the value if found, or a `ParseError` if the section or key is missing.
-    pub fn get_value_in_section(&self, section: &str, key: &str) -> Option<&String> {
+    /// * `Option<&Value>` - Returns the value if found, or `None` if the key does not exist.
+    pub fn get_value_in_section(&self, section: &str, key: &str) -> Option<&Value> {
         self.sections.get(section)?.pairs.get(key)
     }
 }
@@ -65,7 +65,14 @@ pub struct Section {
     /// The name of the section.
     pub name: String,
     /// A map of key-value pairs in this section.
-    pub pairs: HashMap<String, String>,
+    pub pairs: HashMap<String, Value>,
+}
+
+/// Represents a values of the section, containing string and array value.
+#[derive(Debug, PartialEq)]
+pub enum Value {
+    String(String),
+    Array(Vec<String>),
 }
 
 /// Parses the given INI content into a `Config` structure.
@@ -100,7 +107,19 @@ pub fn parse_ini(input: &str) -> anyhow::Result<Config> {
                         Rule::pair => {
                             let mut pair_parts = section_part.into_inner();
                             let key = pair_parts.next().unwrap().as_str().to_string();
-                            let value = pair_parts.next().unwrap().as_str().to_string();
+                            let value_part = pair_parts.next().unwrap();
+
+                            let value = match value_part.as_rule() {
+                                Rule::value => Value::String(value_part.as_str().to_string()),
+                                Rule::array_value => {
+                                    let array_items = value_part
+                                        .into_inner()
+                                        .map(|item| item.as_str().to_string())
+                                        .collect::<Vec<_>>();
+                                    Value::Array(array_items)
+                                }
+                                _ => unreachable!(),
+                            };
                             pairs.insert(key, value);
                         }
                         Rule::comment => {}

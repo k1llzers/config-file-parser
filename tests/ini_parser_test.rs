@@ -43,7 +43,58 @@ fn value_test() -> anyhow::Result<()> {
     assert_eq!(pair.as_span().start(), 0);
     assert_eq!(pair.as_span().end(), 15);
 
+    let pair = INIGrammar::parse(Rule::value, "aa[sf")?
+        .next()
+        .ok_or_else(|| anyhow!("no pair"))?;;
+    assert_eq!(pair.as_str(), "aa");
+    assert_eq!(pair.as_span().start(), 0);
+    assert_eq!(pair.as_span().end(), 2);
+
+    let pair = INIGrammar::parse(Rule::value, "aa]sf")?
+        .next()
+        .ok_or_else(|| anyhow!("no pair"))?;;
+    assert_eq!(pair.as_str(), "aa");
+    assert_eq!(pair.as_span().start(), 0);
+    assert_eq!(pair.as_span().end(), 2);
+
+    let pair = INIGrammar::parse(Rule::value, "aasf,asd")?
+        .next()
+        .ok_or_else(|| anyhow!("no pair"))?;;
+    assert_eq!(pair.as_str(), "aasf");
+    assert_eq!(pair.as_span().start(), 0);
+    assert_eq!(pair.as_span().end(), 4);
+
     let pair = INIGrammar::parse(Rule::value, "");
+    assert!(pair.is_err());
+
+    let pair = INIGrammar::parse(Rule::value, "    ");
+    assert!(pair.is_err());
+
+    Ok(())
+}
+
+#[test]
+fn array_value_test() -> anyhow::Result<()> {
+    let pair = INIGrammar::parse(Rule::array_value, "[aswrdsf%$#sd123, 42342342342]")?
+        .next()
+        .ok_or_else(|| anyhow!("no pair"))?;
+    assert_eq!(pair.as_str(), "[aswrdsf%$#sd123, 42342342342]");
+    assert_eq!(pair.as_span().start(), 0);
+    assert_eq!(pair.as_span().end(), 30);
+
+    let pair = INIGrammar::parse(Rule::array_value, "");
+    assert!(pair.is_err());
+
+    let pair = INIGrammar::parse(Rule::array_value, "aswrdsf%$#sd123, 42342342342]");
+    assert!(pair.is_err());
+
+    let pair = INIGrammar::parse(Rule::array_value, "aswrdsf%$#sd123  42342342342]");
+    assert!(pair.is_err());
+
+    let pair = INIGrammar::parse(Rule::array_value, "[aswrdsf%$#sd123, 42342342342");
+    assert!(pair.is_err());
+
+    let pair = INIGrammar::parse(Rule::array_value, "42342342342");
     assert!(pair.is_err());
 
     Ok(())
